@@ -7,7 +7,7 @@ func ForEach[T any](arr []T, fn func(T, int)) {
 }
 
 func Map[T any, K any](arr []T, fn func(T, int) K) []K {
-	result := make([]K, len(arr))
+	result := make([]K, len(arr), cap(arr))
 	for i, v := range arr {
 		result[i] = fn(v, i)
 	}
@@ -15,7 +15,7 @@ func Map[T any, K any](arr []T, fn func(T, int) K) []K {
 }
 
 func Filter[T any](arr []T, fn func(T, int) bool) []T {
-	var result []T
+	result := make([]T, len(arr), cap(arr))
 	for i, v := range arr {
 		if fn(v, i) {
 			result = append(result, v)
@@ -42,7 +42,7 @@ func IndexOf[T comparable](arr []T, value T) int {
 }
 
 func ToMap[T any, K comparable, V any](arr []T, fn func(T, int) (K, V)) map[K]V {
-	resultMap := make(map[K]V)
+	resultMap := make(map[K]V, cap(arr))
 	for i, v := range arr {
 		key, value := fn(v, i)
 		resultMap[key] = value
